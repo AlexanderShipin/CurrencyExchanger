@@ -12,7 +12,7 @@ namespace CurrencyExchanger
 
 		public TransactionLoader()
 		{
-			_loaders.Add("csv", GetTransactionsFromCsv);
+			_loaders.Add(".csv", GetTransactionsFromCsv);
 		}
 
 		public List<Transaction> Load(string csvFilePath)
