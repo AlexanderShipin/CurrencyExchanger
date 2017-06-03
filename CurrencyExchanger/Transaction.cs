@@ -9,5 +9,10 @@ namespace CurrencyExchanger
 		public string CounterCurrency { get; set; }
 		public decimal Amount { get; set; }
 		public DateTime ValueDate { get; set; }
+
+		public CurrencyRateCacheItem ToCurrenceyRateCacheItem()
+		{
+			return new CurrencyRateCacheItem(BaseCurrency, CounterCurrency, ValueDate);
+		}
 	}
 }

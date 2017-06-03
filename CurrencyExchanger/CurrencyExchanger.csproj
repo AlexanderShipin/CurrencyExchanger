@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrencyRateCacheItem.cs" />
     <Compile Include="CurrencyRateLoader.cs" />
     <Compile Include="CurrencyRateResponse.cs" />
     <Compile Include="Program.cs" />

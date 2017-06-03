@@ -22,7 +22,7 @@ namespace CurrencyExchanger
 
 		private decimal CalculateTransaction(Transaction transaction)
 		{
-			var rate = _currencyRateLoader.Load(transaction.ValueDate, transaction.BaseCurrency, transaction.CounterCurrency);
+			var rate = _currencyRateLoader.Load(transaction);
 			return transaction.Amount * rate;
 		}
 	}
