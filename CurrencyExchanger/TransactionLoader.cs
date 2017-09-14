@@ -33,16 +33,26 @@ namespace CurrencyExchanger
 			var parser = new TextFieldParser(csvFilePath) { TextFieldType = FieldType.Delimited };
 			parser.SetDelimiters(",");
 
-            var stringCounter = 0;
+            var lineCounter = 0;
+            var brokenLinesCounter = 0;
 			while (!parser.EndOfData)
 			{
 				string[] fields = parser.ReadFields();
-				result.Add(TransactionBuilder(fields));
+                try
+                {
+                    result.Add(TransactionBuilder(fields));
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e);
+                    brokenLinesCounter++;
+                }
 
-                stringCounter++;
-                if (stringCounter % 10 == 0)
-                    logger.Info("Loaded " + stringCounter + " transactions");
+                lineCounter++;
+                if (lineCounter % 10 == 0)
+                    logger.Info("Loaded " + lineCounter + " transactions");
 			}
+            logger.Info(brokenLinesCounter + " transactions were not loaded");
 			return result;
 		}
 
@@ -52,16 +62,26 @@ namespace CurrencyExchanger
 			if (!DateTime.TryParse(fields[0], out tradeDate))
 				throw new Exception("Wrong date format for TradeDate " + fields[0]);
 
-			DateTime valueDate;
+            decimal amount = 0;
+            if (!Decimal.TryParse(fields[3], NumberStyles.Number, CultureInfo.InvariantCulture, out amount))
+                throw new Exception("Wrong decimal format for Amount " + fields[3]);
+
+            DateTime valueDate;
 			if (!DateTime.TryParse(fields[4], out valueDate))
 				throw new Exception("Wrong date format for ValueDate " + fields[4]);
 
-			return new Transaction
+            if (fields[1] == "")
+                throw new Exception("BaseCurrency is empty");
+
+            if (fields[2] == "")
+                throw new Exception("CounterCurrency is empty");
+
+            return new Transaction
 				{
 					TradeDate = tradeDate,
 					BaseCurrency = fields[1],
 					CounterCurrency = fields[2],
-					Amount = decimal.Parse(fields[3], CultureInfo.InvariantCulture),
+					Amount = amount,
 					ValueDate = valueDate
 				};
 		}

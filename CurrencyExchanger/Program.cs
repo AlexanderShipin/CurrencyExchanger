@@ -17,7 +17,6 @@ namespace CurrencyExchanger
 
                 Console.WriteLine(String.Empty);
                 Console.WriteLine("-----Summary-----");
-                Console.WriteLine(String.Empty);
                 calculatedTransactions.ToList().ForEach(t => Console.WriteLine(String.Format("{0} {1:0.00}", t.Key, t.Value)));
 			}
 			catch (Exception e)
