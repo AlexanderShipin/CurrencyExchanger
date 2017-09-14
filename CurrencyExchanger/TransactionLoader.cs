@@ -9,6 +9,7 @@ namespace CurrencyExchanger
 	public class TransactionLoader
 	{
 		private readonly Dictionary<string, Func<string, List<Transaction>>> _loaders = new Dictionary<string, Func<string, List<Transaction>>>();
+        private readonly Logger logger = new Logger();
 
 		public TransactionLoader()
 		{
@@ -32,10 +33,15 @@ namespace CurrencyExchanger
 			var parser = new TextFieldParser(csvFilePath) { TextFieldType = FieldType.Delimited };
 			parser.SetDelimiters(",");
 
+            var stringCounter = 0;
 			while (!parser.EndOfData)
 			{
 				string[] fields = parser.ReadFields();
 				result.Add(TransactionBuilder(fields));
+
+                stringCounter++;
+                if (stringCounter % 10 == 0)
+                    logger.Info("Loaded " + stringCounter + " transactions");
 			}
 			return result;
 		}

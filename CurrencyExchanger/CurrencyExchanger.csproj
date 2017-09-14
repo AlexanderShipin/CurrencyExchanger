@@ -46,6 +46,7 @@
     <Compile Include="CurrencyRateCacheItem.cs" />
     <Compile Include="CurrencyRateLoader.cs" />
     <Compile Include="CurrencyRateResponse.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction.cs" />

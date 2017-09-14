@@ -4,11 +4,13 @@ namespace CurrencyExchanger
 {
 	public class TransactionCalculator
 	{
-		readonly CurrencyRateLoader _currencyRateLoader = new CurrencyRateLoader();
+		private readonly CurrencyRateLoader _currencyRateLoader = new CurrencyRateLoader();
+        private readonly Logger logger = new Logger();
 
-		public Dictionary<string, decimal> CalculateTransationsByCounterCurrency(List<Transaction> transactions)
+        public Dictionary<string, decimal> CalculateTransationsByCounterCurrency(List<Transaction> transactions)
 		{
 			var result = new Dictionary<string, decimal>();
+            var stringCounter = 0;
 			foreach (var t in transactions)
 			{
 				var value = CalculateTransaction(t);
@@ -16,7 +18,11 @@ namespace CurrencyExchanger
 					result[t.CounterCurrency] += value;
 				else
 					result[t.CounterCurrency] = value;
-			}
+
+                stringCounter++;
+                if (stringCounter % 10 == 0)
+                    logger.Info("Processed " + stringCounter + " transactions");
+            }
 			return result;
 		}
 
