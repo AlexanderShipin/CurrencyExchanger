@@ -9,7 +9,7 @@ namespace CurrencyExchanger
 	public class TransactionLoader
 	{
 		private readonly Dictionary<string, Func<string, List<Transaction>>> _loaders = new Dictionary<string, Func<string, List<Transaction>>>();
-        private readonly Logger logger = new Logger();
+		private readonly Logger logger = new Logger();
 
 		public TransactionLoader()
 		{
@@ -33,26 +33,26 @@ namespace CurrencyExchanger
 			var parser = new TextFieldParser(csvFilePath) { TextFieldType = FieldType.Delimited };
 			parser.SetDelimiters(",");
 
-            var lineCounter = 0;
-            var brokenLinesCounter = 0;
+			var lineCounter = 0;
+			var brokenLinesCounter = 0;
 			while (!parser.EndOfData)
 			{
 				string[] fields = parser.ReadFields();
-                try
-                {
-                    result.Add(TransactionBuilder(fields));
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e);
-                    brokenLinesCounter++;
-                }
+				try
+				{
+					result.Add(TransactionBuilder(fields));
+				}
+				catch (Exception e)
+				{
+					logger.Error(e);
+					brokenLinesCounter++;
+				}
 
-                lineCounter++;
-                if (lineCounter % 10 == 0)
-                    logger.Info("Loaded " + lineCounter + " transactions");
+				lineCounter++;
+				if (lineCounter % 10 == 0)
+					logger.Info("Loaded " + lineCounter + " transactions");
 			}
-            logger.Info(brokenLinesCounter + " transactions were not loaded");
+			logger.Info(brokenLinesCounter + " transactions were not loaded");
 			return result;
 		}
 
@@ -62,28 +62,28 @@ namespace CurrencyExchanger
 			if (!DateTime.TryParse(fields[0], out tradeDate))
 				throw new Exception("Wrong date format for TradeDate " + fields[0]);
 
-            decimal amount = 0;
-            if (!Decimal.TryParse(fields[3], NumberStyles.Number, CultureInfo.InvariantCulture, out amount))
-                throw new Exception("Wrong decimal format for Amount " + fields[3]);
+			decimal amount;
+			if (!Decimal.TryParse(fields[3], NumberStyles.Number, CultureInfo.InvariantCulture, out amount))
+				throw new Exception("Wrong decimal format for Amount " + fields[3]);
 
-            DateTime valueDate;
+			DateTime valueDate;
 			if (!DateTime.TryParse(fields[4], out valueDate))
 				throw new Exception("Wrong date format for ValueDate " + fields[4]);
 
-            if (fields[1] == "")
-                throw new Exception("BaseCurrency is empty");
+			if (fields[1] == "")
+				throw new Exception("BaseCurrency is empty");
 
-            if (fields[2] == "")
-                throw new Exception("CounterCurrency is empty");
+			if (fields[2] == "")
+				throw new Exception("CounterCurrency is empty");
 
-            return new Transaction
-				{
-					TradeDate = tradeDate,
-					BaseCurrency = fields[1],
-					CounterCurrency = fields[2],
-					Amount = amount,
-					ValueDate = valueDate
-				};
+			return new Transaction
+			{
+				TradeDate = tradeDate,
+				BaseCurrency = fields[1],
+				CounterCurrency = fields[2],
+				Amount = amount,
+				ValueDate = valueDate
+			};
 		}
 	}
 }
