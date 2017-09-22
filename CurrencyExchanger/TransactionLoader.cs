@@ -21,7 +21,7 @@ namespace CurrencyExchanger
 			var extension = Path.GetExtension(csvFilePath);
 
 			if (String.IsNullOrEmpty(extension) || !_loaders.ContainsKey(extension))
-				throw new Exception("File format is not supported");
+				throw new Exception(Resources.FileFormatIsNotSupported);
 
 			return _loaders[extension](csvFilePath);
 		}
@@ -31,7 +31,7 @@ namespace CurrencyExchanger
 			var result = new List<Transaction>();
 
 			var parser = new TextFieldParser(csvFilePath) { TextFieldType = FieldType.Delimited };
-			parser.SetDelimiters(",");
+			parser.SetDelimiters(Settings.CsvDelimiter);
 
 			var lineCounter = 0;
 			var brokenLinesCounter = 0;
@@ -50,31 +50,31 @@ namespace CurrencyExchanger
 
 				lineCounter++;
 				if (lineCounter % 10 == 0)
-					logger.Info("Loaded " + lineCounter + " transactions");
+					logger.Info(String.Format(Resources.LoadedNTransactions, lineCounter));
 			}
-			logger.Info(brokenLinesCounter + " transactions were not loaded");
+			logger.Info(String.Format(Resources.NTransactionsWereNotLoaded, brokenLinesCounter));
 			return result;
 		}
 
 		private Transaction TransactionBuilder(string[] fields)
 		{
 			DateTime tradeDate;
-			if (!DateTime.TryParse(fields[0], out tradeDate))
-				throw new Exception("Wrong date format for TradeDate " + fields[0]);
+			if (!DateTime.TryParseExact(fields[0], Settings.DatePattern, Settings.DateNumberFormatCulture, DateTimeStyles.None, out tradeDate))
+				throw new Exception(String.Format(Resources.WrongDateFormatForTradeDate, fields[0]));
 
 			decimal amount;
-			if (!Decimal.TryParse(fields[3], NumberStyles.Number, CultureInfo.InvariantCulture, out amount))
-				throw new Exception("Wrong decimal format for Amount " + fields[3]);
+			if (!Decimal.TryParse(fields[3], NumberStyles.Number, Settings.DateNumberFormatCulture, out amount))
+				throw new Exception(String.Format(Resources.WrongDecimalFormatForAmount, fields[3]));
 
 			DateTime valueDate;
-			if (!DateTime.TryParse(fields[4], out valueDate))
-				throw new Exception("Wrong date format for ValueDate " + fields[4]);
+			if (!DateTime.TryParseExact(fields[4], Settings.DatePattern, Settings.DateNumberFormatCulture, DateTimeStyles.None, out valueDate))
+				throw new Exception(String.Format(Resources.WrongDecimalFormatForAmount, fields[4]));
 
-			if (fields[1] == "")
-				throw new Exception("BaseCurrency is empty");
+			if (fields[1] == String.Empty)
+				throw new Exception(Resources.BaseCurrencyIsEmpty);
 
-			if (fields[2] == "")
-				throw new Exception("CounterCurrency is empty");
+			if (fields[2] == String.Empty)
+				throw new Exception(Resources.CounterCurrencyIsEmpty);
 
 			return new Transaction
 			{

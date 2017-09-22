@@ -6,7 +6,7 @@ namespace CurrencyExchanger
 	{
 		public void Error(Exception e)
 		{
-			Console.WriteLine("Error: " + e.Message);
+			Console.WriteLine(String.Format(Resources.Error, e.Message));
 		}
 
 		public void Info(String m)

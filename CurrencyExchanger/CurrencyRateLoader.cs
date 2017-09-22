@@ -15,7 +15,7 @@ namespace CurrencyExchanger
 
 		public CurrencyRateLoader()
 		{
-			_loaders.Add("fixer", LoadFromFixer);
+			_loaders.Add(DefaultSource, LoadFromFixer);
 		}
 
 		public decimal Load(Transaction transaction)
@@ -44,7 +44,7 @@ namespace CurrencyExchanger
 			Stream respStream = req.GetResponse().GetResponseStream();
 			
 			if (respStream == null)
-				throw new Exception("No rate service response");
+				throw new Exception(Resources.NoRateServiceResponse);
 
 			var json = (new StreamReader(respStream)).ReadToEnd();
 

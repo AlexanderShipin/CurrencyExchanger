@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CurrencyExchanger
 {
@@ -21,7 +22,7 @@ namespace CurrencyExchanger
 
 				stringCounter++;
 				if (stringCounter % 10 == 0)
-					logger.Info("Processed " + stringCounter + " transactions");
+					logger.Info(String.Format(Resources.ProcessedNTransactions, stringCounter));
 			}
 			return result;
 		}
