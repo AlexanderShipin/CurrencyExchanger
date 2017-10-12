@@ -6,7 +6,7 @@ namespace CurrencyExchanger
 	{
 		public const string CsvFilePath = @"..\\..\transactions-v2.csv";
 		public const string CsvDelimiter = ",";
-		public const string DatePattern = "yyyy-mm-dd";
+		public const string DatePattern = "yyyy-MM-dd";
 		public static readonly CultureInfo DateNumberFormatCulture = CultureInfo.InvariantCulture;
 	}
 }
