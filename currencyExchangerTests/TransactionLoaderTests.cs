@@ -51,20 +51,12 @@ namespace currencyExchangerTests
 		}
 
 		[TestMethod]
-		public void LoaderDoesNotLoadTransactionWithWrongTradeDate()
+		public void LoaderDoesNotLoadTransactionWithWrongData()
 		{
-			var csvFilePath = @"..\\..\transactions-wrong-date-test.csv";
+			var csvFilePath = @"..\\..\transactions-wrong-data-test.csv";
 			var loader = new TransactionLoader();
-			try
-			{
-				var transactions = loader.Load(csvFilePath);
-			}
-			catch (Exception e)
-			{
-				Assert.IsTrue(e.Message.Contains(Resources.WrongDateFormatForTradeDate));
-				return;
-			}
-			Assert.Fail();
+			var transactions = loader.Load(csvFilePath);
+			Assert.AreEqual(0, transactions.Count);
 		}
 	}
 }

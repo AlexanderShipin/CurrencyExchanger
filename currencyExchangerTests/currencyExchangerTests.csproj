@@ -60,7 +60,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="transactions-wrong-date-test.csv" />
+    <None Include="transactions-wrong-data-test.csv" />
     <None Include="transactions-test.csv" />
   </ItemGroup>
   <Choose>

@@ -70,10 +70,10 @@ namespace CurrencyExchanger
 			if (!DateTime.TryParseExact(fields[4], Settings.DatePattern, Settings.DateNumberFormatCulture, DateTimeStyles.None, out valueDate))
 				throw new Exception(String.Format(Resources.WrongDecimalFormatForAmount, fields[4]));
 
-			if (fields[1] == String.Empty)
+			if (String.IsNullOrEmpty(fields[1].Trim()))
 				throw new Exception(Resources.BaseCurrencyIsEmpty);
 
-			if (fields[2] == String.Empty)
+			if (String.IsNullOrEmpty(fields[2].Trim()))
 				throw new Exception(Resources.CounterCurrencyIsEmpty);
 
 			return new Transaction
