@@ -5,8 +5,15 @@ namespace CurrencyExchanger
 {
 	public class TransactionCalculator
 	{
-		private readonly CurrencyRateLoader _currencyRateLoader = new CurrencyRateLoader();
+		private readonly ICurrencyRateLoader _currencyRateLoader = new CurrencyRateLoader();
 		private readonly Logger logger = new Logger();
+
+		public TransactionCalculator(){}
+
+		public TransactionCalculator(ICurrencyRateLoader loader)
+		{
+			_currencyRateLoader = loader;
+		}
 
 		public Dictionary<string, decimal> CalculateTransationsByCounterCurrency(List<Transaction> transactions)
 		{

@@ -6,7 +6,7 @@ using System.Web.Script.Serialization;
 
 namespace CurrencyExchanger
 {
-	public class CurrencyRateLoader
+	public class CurrencyRateLoader : ICurrencyRateLoader
 	{
 		private const string DefaultSource = "fixer";
 		readonly JavaScriptSerializer _javaScriptSerializer = new JavaScriptSerializer();
@@ -38,7 +38,7 @@ namespace CurrencyExchanger
 				return _cache[cacheItem];
 
 			var req = (HttpWebRequest) WebRequest.Create(string.Format(@"http://api.fixer.io/{0}?base={1}&symbols={2}",
-				transaction.ValueDate.ToString("yyyy-MM-dd"), transaction.BaseCurrency, transaction.CounterCurrency));
+				transaction.ValueDate.ToString(Settings.DatePattern), transaction.BaseCurrency, transaction.CounterCurrency));
 			req.Method = "GET";
 
 			Stream respStream = req.GetResponse().GetResponseStream();
