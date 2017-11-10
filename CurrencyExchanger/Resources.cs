@@ -10,7 +10,7 @@
 		public const string WrongDateFormatForValueDate = "Wrong date format for ValueDate {0}";
 		public const string BaseCurrencyIsEmpty = "BaseCurrency is empty";
 		public const string CounterCurrencyIsEmpty = "CounterCurrency is empty";
-		public const string ProcessedNTransactions = "Processed {0} transactions";
+		public const string TransactionsAreBeingProcessed = "Transaction are being processed...";
 		public const string Error = "Error: {0}";
 		public const string Summary = "-----Summary-----";
 		public const string NoRateServiceResponse = "No rate service response";

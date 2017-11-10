@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CurrencyExchanger
 {
@@ -17,20 +18,13 @@ namespace CurrencyExchanger
 
 		public Dictionary<string, decimal> CalculateTransationsByCounterCurrency(List<Transaction> transactions)
 		{
-			var result = new Dictionary<string, decimal>();
-			var stringCounter = 0;
-			foreach (var t in transactions)
-			{
-				var value = CalculateTransaction(t);
-				if (result.ContainsKey(t.CounterCurrency))
-					result[t.CounterCurrency] += value;
-				else
-					result[t.CounterCurrency] = value;
+			logger.Info(Resources.TransactionsAreBeingProcessed);
 
-				stringCounter++;
-				if (stringCounter % 10 == 0)
-					logger.Info(String.Format(Resources.ProcessedNTransactions, stringCounter));
-			}
+			var result = transactions
+				.GroupBy(t => t.CounterCurrency)
+				.Select(g => new {Currency = g.Key, Sum = g.Sum(t => CalculateTransaction(t))})
+				.ToDictionary(t => t.Currency, t => t.Sum);
+
 			return result;
 		}
 
